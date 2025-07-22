@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de Consumo Anual – Via Verde</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 830px;
+      margin: 32px auto;
+      background: #fff;
+      padding: 30px 22px;
+      border-radius: 16px;
+      box-shadow: 0 0 16px rgba(0,90,20,0.12);
+    }
+    .topo-via-verde {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #dfffe0;
+      padding: 18px;
+      border-radius: 8px;
+      margin-bottom: 23px;
+    }
+    .topo-via-verde img {
+      height: 50px;
+    }
+    .titulos {
+      display: flex;
+      flex-direction: column;
+    }
+    .titulo {
+      font-size: 1.4em;
+      color: #006400;
+      font-weight: bold;
+      margin: 0;
+    }
+    .subtitulo {
+      font-size: 1em;
+      color: #228B22;
+      font-weight: 500;
+      margin: 0;
+    }
+    h2 {
+      color: #228B22;
+      margin-top: 38px;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 5px;
+      color: #006400;
+    }
+    input {
+      width: 100%;
+      font-size: 1em;
+      padding: 9px 7px;
+      border: 1.5px solid #228B22;
+      border-radius: 5px;
+      margin-bottom: 6px;
+      box-sizing: border-box;
+      background: #f7fefc;
+    }
+    button {
+      width: 100%;
+      background: linear-gradient(90deg, #228b22, #006400);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 1.1em;
+      cursor: pointer;
+      margin-top: 22px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px #c4eec4;
+    }
+    button:hover {
+      background: linear-gradient(90deg,#006400,#228b22);
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #b3ddb3;
+      padding: 12px 7px;
+      text-align: center;
+      font-size: 1.06em;
+    }
+    th {
+      background-color: #dfffe0;
+      color: #006400;
+      font-weight: bold;
+    }
+    .resultado-final {
+      margin-top: 24px;
+      padding: 18px 14px;
+      background: #dfffe0;
+      border: 1.4px solid #97da97;
+      font-size: 1.23em;
+      color: #006400;
+      text-align: center;
+      border-radius: 7px;
+      font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 10px 2vw; }
+      table, th, td { font-size: 15px; }
+      .titulo { font-size: 1.1em }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topo-via-verde">
+      <img src="via_verde_logo.png" alt="Logo Via Verde">
+      <div class="titulos">
+        <div class="titulo">CALCULADORA DE CONSUMO ANUAL – VIA VERDE</div>
+        <div class="subtitulo">Simule sua economia e contribua para a mobilidade limpa</div>
+      </div>
+    </div>
+
+    <label for="v1">V1: Distância percorrida por ano (km)</label>
+    <input type="number" id="v1" step="0.01" placeholder="Ex: 15000">
+
+    <h2>⛽ Carro Comum</h2>
+    <label for="v2">V2: Consumo médio (km/l)</label>
+    <input type="number" id="v2" step="0.01" value="10">
+
+    <label for="v3">V3: Preço do combustível (R$/litro)</label>
+    <input type="number" id="v3" step="0.01" value="6">
+
+    <h2>⚡ Carro Elétrico</h2>
+    <label for="v4">V4: Consumo médio (km/kWh)</label>
+    <input type="number" id="v4" step="0.01" value="6">
+
+    <label for="v5">V5: Preço da energia (R$/kWh)</label>
+    <input type="number" id="v5" step="0.01" value="1.4">
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    function truncar(valor) {
+      return Math.floor(valor * 100) / 100;
+    }
+
+    function calcular() {
+      const v1 = parseFloat(document.getElementById('v1').value);
+      const v2 = parseFloat(document.getElementById('v2').value);
+      const v3 = parseFloat(document.getElementById('v3').value);
+      const v4 = parseFloat(document.getElementById('v4').value);
+      const v5 = parseFloat(document.getElementById('v5').value);
+
+      if (isNaN(v1) || isNaN(v2) || isNaN(v3) || isNaN(v4) || isNaN(v5)) {
+        alert('Por favor, preencha todos os campos corretamente.');
+        return;
+      }
+
+      const consumoMensalComb = truncar((v1 / v2) / 12);
+      const gastoMensalComb = truncar(consumoMensalComb * v3);
+      const gastoAnualComb = truncar((v1 / v2) * v3);
+
+      const consumoMensalEletrico = truncar((v1 / v4) / 12);
+      const gastoMensalEletrico = truncar(consumoMensalEletrico * v5);
+      const gastoAnualEletrico = truncar((v1 / v4) * v5);
+
+      const economia = truncar(gastoAnualComb - gastoAnualEletrico);
+
+      const html = `
+        <table>
+          <tr>
+            <th></th>
+            <th>Carro Comum ⛽</th>
+            <th>Carro Elétrico ⚡</th>
+          </tr>
+          <tr>
+            <td>Consumo mensal</td>
+            <td>${consumoMensalComb} litros</td>
+            <td>${consumoMensalEletrico} kWh</td>
+          </tr>
+          <tr>
+            <td>Gasto mensal</td>
+            <td>R$ ${gastoMensalComb}</td>
+            <td>R$ ${gastoMensalEletrico}</td>
+          </tr>
+          <tr>
+            <td>Gasto anual</td>
+            <td>R$ ${gastoAnualComb}</td>
+            <td>R$ ${gastoAnualEletrico}</td>
+          </tr>
+        </table>
+
+        <div class="resultado-final">
+          💰 <strong>Você economizará:</strong><br>
+          R$ ${economia.toFixed(2)} por ano ao usar um carro elétrico 🚗⚡
+        </div>
+      `;
+
+      document.getElementById('resultado').innerHTML = html;
+    }
+  </script>
+</body>
+</html>
